@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Campus Population Map</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" />
+    <link href="css/templatemo-style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Top box -->
+        <!-- Logo & Site Name -->
+        <div class="placeholder">
+            <div class="parallax-window" data-parallax="scroll" data-image-src="img/vt_campus.jpg">
+                <div class="tm-header">
+                    <div class="row tm-header-inner">
+                        <div class="col-12">
+                            <img src="img/simple-house-logo.png" alt="Logo" class="tm-site-logo" />
+                            <div class="tm-site-text-box">
+                                <h1 class="tm-site-title">Campus Population Map</h1>
+                                <h6 class="tm-site-description">Presented by Arjuna Sondhi, Matt Hardner and Naveen Sharma</h6>
+                            </div>
+                        </div>
+                        <nav class="tm-nav">
+                            <ul class="tm-nav-ul">
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Project Summary</a></li>
+                                <li class="tm-nav-li"><a href="use_cases.html" class="tm-nav-link">Use Cases</a></li>
+                                <li class="tm-nav-li"><a href="requirements.html" class="tm-nav-link active">Requirements</a></li>
+                                <li class="tm-nav-li"><a href="high_level_design.html" class="tm-nav-link">High-Level Design</a></li>
+                                <li class="tm-nav-li"><a href="design_rationale.html" class="tm-nav-link">Design Rationale</a></li>
+                                <li class="tm-nav-li"><a href="conclusion.html" class="tm-nav-link">Conclusion</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <header class="row tm-welcome-section">
+                <h2 class="col-12 text-center tm-section-title">Requirements</h2>
+                <h3 class="col-12 text-left">Functional Requirements</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th><strong>#####</strong></th>
+                            <th><strong>Description</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>FR-1</strong></td>
+                            <td>Users have the ability to use their VT email to create an account. Verification will be handled via email. User has to create a password.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-2</strong></td>
+                            <td>Existing users must login with correct credentials (username and password).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-3</strong></td>
+                            <td>Users can access the system remotely.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-4</strong></td>
+                            <td>Authenticated users can view the campus population map.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-5</strong></td>
+                            <td>Users with privileges will be able to see real data which is at most five minutes behind real time.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-6</strong></td>
+                            <td>Users will be able to change time periods of the visualization.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-7</strong></td>
+                            <td>The map will be colored based on the population distribution across campus.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-8</strong></td>
+                            <td>Clicking on a building will drill into the 3D floor representation.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-9</strong></td>
+                            <td>Users can change basemap (topographic view, black and white map, Openstreet map, etc).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-10</strong></td>
+                            <td>Users can view the generated statistical summary to understand population density patterns.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-11</strong></td>
+                            <td>Users can set and get alerts (SMS & Email) when the population for a building reaches a threshold so that they can know the risk when they are not using the system.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-12</strong></td>
+                            <td>Users can get a daily report summarizing the population distribution over 24 hours so that they can make decisions on which buildings to clean and sanitize Users can print out the reports and maps I can generate a physical
+                                copy of the maps to share with concerned authorities</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FR-12</strong></td>
+                            <td>Users can print out the reports and maps I can generate a physical copy of the maps to share with concerned authorities.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h3 class="col-12 text-left">Non Functional Requirements</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th><strong>#####</strong></th>
+                            <th><strong>Description</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><strong>NFR-1</strong></td>
+                            <td>Website will be available on all modern browsers.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NFR-2</strong></td>
+                            <td>Database will be scalable depending on volume.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NFR-3</strong></td>
+                            <td>Anonymity - Database will not contain any personally identifiable information.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NFR-4</strong></td>
+                            <td>Website and database will have 99%+ uptime - it will be Reliable.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NFR-5</strong></td>
+                            <td>Database and application will be up to date on security.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </header>
+
+
+
+        </main>
+
+        <footer class="tm-footer text-center">
+            <p>Project 1 Website | CS 5744 Software Design & Quality</p>
+        </footer>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle click on paging links
+            $('.tm-paging-link').click(function(e) {
+                e.preventDefault();
+
+                var page = $(this).text().toLowerCase();
+                $('.tm-gallery-page').addClass('hidden');
+                $('#tm-gallery-page-' + page).removeClass('hidden');
+                $('.tm-paging-link').removeClass('active');
+                $(this).addClass("active");
+            });
+        });
+    </script>
+</body>
+
+</html>

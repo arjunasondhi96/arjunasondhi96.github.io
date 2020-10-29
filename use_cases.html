@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Use Cases</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" />
+    <link href="css/templatemo-style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Top box -->
+        <!-- Logo & Site Name -->
+        <div class="placeholder">
+            <div class="parallax-window" data-parallax="scroll" data-image-src="img/vt_campus.jpg">
+                <div class="tm-header">
+                    <div class="row tm-header-inner">
+                        <div class="col-12">
+                            <img src="img/simple-house-logo.png" alt="Logo" class="tm-site-logo" />
+                            <div class="tm-site-text-box">
+                                <h1 class="tm-site-title">Campus Population Map</h1>
+                                <h6 class="tm-site-description">Presented by Arjuna Sondhi, Matt Hardner and Naveen Sharma</h6>
+                            </div>
+                        </div>
+                        <nav class="tm-nav">
+                            <ul class="tm-nav-ul">
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Project Summary</a></li>
+                                <li class="tm-nav-li"><a href="use_cases.html" class="tm-nav-link active">Use Cases</a></li>
+                                <li class="tm-nav-li"><a href="requirements.html" class="tm-nav-link">Requirements</a></li>
+                                <li class="tm-nav-li"><a href="high_level_design.html" class="tm-nav-link">High-Level Design</a></li>
+                                <li class="tm-nav-li"><a href="design_rationale.html" class="tm-nav-link">Design Rationale</a></li>
+                                <li class="tm-nav-li"><a href="conclusion.html" class="tm-nav-link">Conclusion</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <header class="row tm-welcome-section">
+                <h2 class="col-12 text-center tm-section-title">Use Cases</h2>
+                <h3 class="col-12 text-left">Customer and Intended User</h3>
+                <p class="col-12 text-left">The customer of this system is Virginia Tech, more specifically, Virginia Tech Emergency Management (VTEM). VTEM is a department of Virginia Tech whose goal is to build, improve, and sustain university resilience, departmental readiness,
+                    and individual preparedness. The office takes an all-hazards approach to continuously further the capability of the Virginia Tech community to plan for, mitigate against, respond to, and recover from an incident or emergency. The intended
+                    users of the system are VTEM employees and associates who will use the system to make better decisions regarding emergency management.
+                </p>
+
+                <h3 class="col-12 text-left">Use Case Diagram</h3>
+                <p class="col-12 text-left">The figure below shows a use case diagram for the proposed Campus Population Mapping system. The actor (user) of the system is Virginia Tech Emergency Management (VTEM) employee. <br><br>
+                </p>
+                <img src="img/usecase/use_case_diagram.png" id="use_case_diagram" alt="">
+
+                <h3 class="col-12 text-left">User Personas</h3>
+                <h4 class="col-12 text-left">Persona 1</h4>
+                <img src="img/usecase/user_persona_jane.png" class="persona_img" alt="">
+                <p class="col-12 text-left">Jane is a female employee working at VTEM. She is 31 years old and has an advanced (Master's) degree in Emergency Management. She has good experience using computers and the web. <br><br>Jane is currently responsible for coordinating with
+                    emergency responders during a crisis to help them effectively evacuate the campus. She shares responsibility in allocation of personnel and resources for emergencies such as fires, earthquakes, school shootings, etc. <br><br>Scenario:
+                    During a campus fire Jane needs to coordinate with the first responders and help direct them to the areas of the campus that need immediate assistance. Jane uses the Campus Population Map and identifies areas of the campus with a large
+                    population density near the fire and is able to communicate this information to the first responders quickly. This increases the speed and efficiency by which the evacuations are conducted.<br><br>
+                </p>
+
+                <h4 class="col-12 text-left">Persona 2</h4>
+                <img src="img/usecase/user_persona_john.png" class="persona_img" alt="">
+                <p class="col-12 text-left">John is a male employee working at VTEM. He is 35 years old and has an advanced (Master's) degree in Civil Engineering. He has good experience using computers and the web. <br><br>John is currently responsible for prioritizing the need
+                    of COVID-19 sanitization across the VT campus. At VTEM, he also shares responsibility in allocation of personnel and resources for other emergency events. <br><br>Scenario: During the COVID-19 pandemic John needs to assign the sanitization
+                    team of VT a set of buildings to sanitize every night. To make the best decision and pick the buildings most in need of sanitization, John uses the Campus Population Map to generate a report for the last 24 hours. Using this information
+                    John can identify buildings that had the most occupancy over the last 24 hours and which consequently are most in need of sanitization. John deploys the sanitization team to these buildings based on the information from the system.
+                    This informative report helped John make the best decision supported by data to ensure efficient use of sanitization resources of VT.
+                </p>
+
+
+
+
+            </header>
+
+
+
+        </main>
+
+        <footer class="tm-footer text-center">
+            <p>Project 1 Website | CS 5744 Software Design & Quality</p>
+        </footer>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle click on paging links
+            $('.tm-paging-link').click(function(e) {
+                e.preventDefault();
+
+                var page = $(this).text().toLowerCase();
+                $('.tm-gallery-page').addClass('hidden');
+                $('#tm-gallery-page-' + page).removeClass('hidden');
+                $('.tm-paging-link').removeClass('active');
+                $(this).addClass("active");
+            });
+        });
+    </script>
+</body>
+
+</html>
