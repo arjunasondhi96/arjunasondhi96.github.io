@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Campus Population Map</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet" />
+    <link href="css/templatemo-style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Top box -->
+        <!-- Logo & Site Name -->
+        <div class="placeholder">
+            <div class="parallax-window" data-parallax="scroll" data-image-src="img/vt_campus.jpg">
+                <div class="tm-header">
+                    <div class="row tm-header-inner">
+                        <div class="col-12">
+                            <img src="img/simple-house-logo.png" alt="Logo" class="tm-site-logo" />
+                            <div class="tm-site-text-box">
+                                <h1 class="tm-site-title">Campus Population Map</h1>
+                                <h6 class="tm-site-description">Presented by Arjuna Sondhi, Matt Hardner and Naveen Sharma</h6>
+                            </div>
+                        </div>
+                        <nav class="tm-nav">
+                            <ul class="tm-nav-ul">
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link active">Project Summary</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Use Cases</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Requirements</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">High-Level Design</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Design Rationale</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Conclusion</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <header class="row tm-welcome-section">
+                <h2 class="col-12 text-center tm-section-title">Project Summary</h2>
+                <h3 class="col-12 text-left">Problem</h3>
+                <p class="col-12 text-left">There is a need to estimate and visualize the campus population distribution to inform on sanitization and cleaning decisions to limit the spread of COVID-19. The population information is also helpful in making better decisions with regards
+                    to emergency management.
+                </p>
+                <h3 class="col-12 text-left">Background</h3>
+                <p class="col-12 text-left">The identification of campus population at-risk for certain hazard/emergency (terrorism, fire, COIVID-19 response, etc.) is critical for making mitigation/evacuation strategies for Virginia Tech emergency management. Knowing the near-real
+                    time population distribution across the campus is beneficial for decision making in effective response and resource allocation. A wireless access point (AP) is a network hardware device that allows devices to connect to a wired network.
+                    Its physical location along with the device connection information have potential to be used to estimate and map nearby populations. Using available campus AP connection data, we will be able to design the architecture of a web application
+                    to visualize the campus population in two-dimensional (2D) and in three-dimensional (3D) space.
+                </p>
+                <h3 class="col-12 text-left">Relevance </h3>
+                <p class="col-12 text-left">As we find ourselves in the middle of a global pandemic we need tools to help with the management of current predicament. With college campuses open, it is essential that measures are taken to limit the spread of COVID-19. One such way
+                    is to sanitize campus spaces regularly. As the sanitization and facilities resources of Virginia Tech are limited, the entire campus cannot be sanitized every day, consequently, we need a way to identify areas of the campus that are
+                    frequently used making them more susceptible for spreading the virus. The data from this system will help identify the populated areas on campus and sanitization resources and efforts can be directed towards these high risk areas to
+                    combat the spread of COVID-19. The application we are planning to design will provide an easy way to view the campus population data and it will provide insights beneficial to emergency management situations. In emergencies (campus
+                    fire, earthquake, school shooting, etc.), Virginia Tech Emergency Management employees can use our system to identify highly populated areas of the campus and prioritize evacuation efforts based on this information.
+
+                </p>
+                <h3 class="col-12 text-left">Objective</h3>
+                <p class="col-12 text-left">The purpose of this project is to develop the architecture of a system to visualize the campus population using maps, and 2D/3D visualizations.
+
+                </p>
+                <h3 class="col-12 text-left"> Customer and Intended User</h3>
+                <p class="col-12 text-left">The customer of this system is Virginia Tech, more specifically, Virginia Tech Emergency Management (VTEM). VTEM is a department of Virginia Tech whose goal is to build, improve, and sustain university resilience, departmental readiness,
+                    and individual preparedness. The office takes an all-hazards approach to continuously further the capability of the Virginia Tech community to plan for, mitigate against, respond to, and recover from an incident or emergency. The intended
+                    users of the system are VTEM employees and associates who will use the system to make better decisions regarding emergency management.
+
+                </p>
+
+            </header>
+
+
+
+        </main>
+
+        <footer class="tm-footer text-center">
+            <p>Project 1 Website | CS 5744 Software Design & Quality</p>
+        </footer>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle click on paging links
+            $('.tm-paging-link').click(function(e) {
+                e.preventDefault();
+
+                var page = $(this).text().toLowerCase();
+                $('.tm-gallery-page').addClass('hidden');
+                $('#tm-gallery-page-' + page).removeClass('hidden');
+                $('.tm-paging-link').removeClass('active');
+                $(this).addClass("active");
+            });
+        });
+    </script>
+</body>
+
+</html>
