@@ -236,6 +236,19 @@ address {
     position: relative;
 }
 
+.parallax-window-2 {
+    min-height: 220px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background: transparent;
+    position: relative;
+}
+
+.parallax-mirror {
+    z-index: 999 !important;
+}
+
 .tm-header {
     position: absolute;
     bottom: 0;
