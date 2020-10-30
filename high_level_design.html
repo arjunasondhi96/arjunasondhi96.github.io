@@ -29,9 +29,9 @@
                         <nav class="tm-nav">
                             <ul class="tm-nav-ul">
                                 <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Project Summary</a></li>
-                                <li class="tm-nav-li"><a href="useCases.html" class="tm-nav-link active">Use Cases</a></li>
+                                <li class="tm-nav-li"><a href="useCases.html" class="tm-nav-link">Use Cases</a></li>
                                 <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Requirements</a></li>
-                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">High-Level Design</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link active">High-Level Design</a></li>
                                 <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Design Rationale</a></li>
                                 <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Conclusion</a></li>
                             </ul>
@@ -43,35 +43,147 @@
 
         <main>
             <header class="row tm-welcome-section">
-                <h2 class="col-12 text-center tm-section-title">Use Cases</h2>
-                <h3 class="col-12 text-left">Customer and Intended User</h3>
-                <p class="col-12 text-left">The customer of this system is Virginia Tech, more specifically, Virginia Tech Emergency Management (VTEM). VTEM is a department of Virginia Tech whose goal is to build, improve, and sustain university resilience, departmental readiness,
-                    and individual preparedness. The office takes an all-hazards approach to continuously further the capability of the Virginia Tech community to plan for, mitigate against, respond to, and recover from an incident or emergency. The intended
-                    users of the system are VTEM employees and associates who will use the system to make better decisions regarding emergency management.
+                <h2 class="col-12 text-center tm-section-title">High-Level Design</h2>
+                <p class="col-12 text-left">The base of any quality application is the quality architecture design.For Campus population mapping system which includes multiple components such as data warehouse to collect data, user interaction, alerting etc. we are approaching this
+                    problem to divide this into multiple processes: ETL process and User Process. The image below shows the architectural overview of the system we have designed.
+                    <br><br></p>
+
+                <img src="img/high-lvl-requirements/architecture_overview.png" id="architecture_overview" class="doc-image" alt="">
+
+                <h3 class="col-12 text-left">ETL Process</h3>
+                <p class="col-12 text-left">The Enterprise Geospatial Information Systems at Virginia Tech (a.k.a. Enterprise GIS) has collected data on campus AP connections which they are providing us for this project. Campus population data is collected using data from Aruba
+                    Airwave Management (AMP) platform (a platform used by the Network and WiFi department of Virginia Tech) and have building and floor level GIS polygons in the EGIS database.
+                    <br><br>
                 </p>
 
-                <h3 class="col-12 text-left">Use Case Diagram</h3>
-                <p class="col-12 text-left">The figure below shows a use case diagram for the proposed Campus Population Mapping system. The actor (user) of the system is Virginia Tech Emergency Management (VTEM) employee. <br><br>
+                <p class="col-12 text-left">The extract transform load (ETL) process consists of four main sections for getting the data available for consumption. The Aruba Airwave Mgmt Platform (AMP) consists of two processes, one for building level and one for Mac level. The
+                    EGIS Database will also have two ETL processes, one for the building feature class and the other for the floor feature class. These databases consist of reference data and fact data, the process was designed based on the type of data.
+                    <br><br> The pipe and filter design was chosen for the ETL process because of the flexibility of the architecture. Pipe and filter easily allow for new filters to be added to the program without having to decouple other sub-processes,
+                    this is ideal for an ETL solution. The filter could be so generic to just allow control values to be added or modified without having to make code changes to your ETL process. The pipe and filter design also allow for optimal performance
+                    as it allows for set-based processing which is ideal for large data sets. These filters can also run simultaneously to allow for better performance, producing the end result faster and in more real-time. This end result, known as a
+                    sink is the final star or snowflake fact dataset which is aggregated based on the needs of the reporting application. The database will not be storing any personally identifiable information like MAC addresses. Instead, we will be
+                    aggregating the counts by time period early on in the process, not exposing MAC to the API. The image below depicts MAC ETL.
+                    <br><br>
                 </p>
-                <img src="img/usecase/use_case_diagram.png" id="use_case_diagram" alt="">
+                <img src="img/high-lvl-requirements/mac_etl.png" id="mac_etl" class="doc-image2" alt="">
 
-                <h3 class="col-12 text-left">User Personas</h3>
-                <h4 class="col-12 text-left">Persona 1</h4>
-                <img src="img/usecase/user_persona_jane.png" class="persona_img" alt="">
-                <p class="col-12 text-left">Jane is a female employee working at VTEM. She is 31 years old and has an advanced (Master's) degree in Emergency Management. She has good experience using computers and the web. <br><br>Jane is currently responsible for coordinating with
-                    emergency responders during a crisis to help them effectively evacuate the campus. She shares responsibility in allocation of personnel and resources for emergencies such as fires, earthquakes, school shootings, etc. <br><br>Scenario:
-                    During a campus fire Jane needs to coordinate with the first responders and help direct them to the areas of the campus that need immediate assistance. Jane uses the Campus Population Map and identifies areas of the campus with a large
-                    population density near the fire and is able to communicate this information to the first responders quickly. This increases the speed and efficiency by which the evacuations are conducted.<br><br>
+                <p class="col-12 text-left">The figure above shows the ETL process for the AMP MAC level dataset. The data will be loaded into a stage representation of the JSON files that are being loaded in five minute intervals. This data consists of the MAC address, device unique
+                    identifier, and time stamp. This data then goes through several filters to scrub and transform the data. The first filter is to check if the JSON received has valid and reasonable responses. It will verify the timestamp is a valid
+                    date, the MAC address is a MAC that is in the reference data, and the device unique identifier is valid.
+                    <br><br> The deduplication filter looks at the data loaded into the stage tables in the last five minutes and compares it against history. If a record has the same device unique identifier and time stamp, it will discard the record
+                    keeping only the first. MAC address was not included in this list for deduplication as a device should only be counted towards one location at any given time, even if for some reason it was able to use multiple.
+                    <br><br> The old timestamp filter looks for a timestamp not outside of a reasonable time period. This filter has been added to the ETL so your history stays static after a certain period of time, it becomes difficult to analyze the
+                    past with constantly moving data. The old data will be filtered out, not going to the transactional tables and only being available in the stage schema.
+                    <br><br> The staging data will go through a transformation filter which will put the data in third normal form. This data will be written to the transactional schema which will be easier to query and better for a business analysis
+                    to work with. This data set could also be used by other applications looking to consume this data that do not want the denormalized fact schema. Lastly, for future data updates, the process will be modified after the transactional
+                    schema for ease of use.
+                    <br><br> The first filter after the transactional tables is the time period aggregation. This is being done every five minutes and will aggregate MAC addresses by year, month, week, day, and hour. This is done so the API can easily
+                    fetch the results without any additional processing needed to be done, increasing performance. This will also prepare the data to be put into the fact schema which will have a calendar dimension, making these time aggregations easier.
+                    <br><br> Lastly, the transactional schema will be transformed into the fact schema for consumption by the API. This will be done in the five minute interval, making the app refreshes as fast as possible. This fact schema will have
+                    various time aggregations so the application can change time periods without having to run any aggregations in real time.
+                    <br><br> The AMP building level, EGIS building feature, and EGIS floor feature all consist of reference data. While these datasets will each contain different attributes, the ETL process for each will be largely the same. These processes
+                    will have a staging schema which is the raw representation of the file and a dimension schema. The dimension schema will be used against the fact to add business sense to the data. The image below depicts Dimension ETL.
+                    <br><br>
                 </p>
 
-                <h4 class="col-12 text-left">Persona 2</h4>
-                <img src="img/usecase/user_persona_john.png" class="persona_img" alt="">
-                <p class="col-12 text-left">John is a male employee working at VTEM. He is 35 years old and has an advanced (Master's) degree in Civil Engineering. He has good experience using computers and the web. <br><br>John is currently responsible for prioritizing the need
-                    of COVID-19 sanitization across the VT campus. At VTEM, he also shares responsibility in allocation of personnel and resources for other emergency events. <br><br>Scenario: During the COVID-19 pandemic John needs to assign the sanitization
-                    team of VT a set of buildings to sanitize every night. To make the best decision and pick the buildings most in need of sanitization, John uses the Campus Population Map to generate a report for the last 24 hours. Using this information
-                    John can identify buildings that had the most occupancy over the last 24 hours and which consequently are most in need of sanitization. John deploys the sanitization team to these buildings based on the information from the system.
-                    This informative report helped John make the best decision supported by data to ensure efficient use of sanitization resources of VT.
+                <img src="img/high-lvl-requirements/dimension_etl.png" id="dim_etl" class="doc-image2" alt="">
+
+                <p class="col-12 text-left">The dimension data will all go through a delta detection filter when a new file is loaded into the database. These files will be full loads of the dimension, each file is the latest information at that point in time. This process will
+                    determine what attributes have been added, modified, and deleted since the last execution. We are using delta detection to be able to add a quality assurance layer at a later time, this would not be possible with a truncate and reload
+                    solution.
+                    <br><br>The slowly changing dimension filter is applied to the data to track changes after delta detection has been identified. These dimension tables will be using type two slowly changing dimensions as history for the reference data
+                    is critical. This would also allow us to create a temporal view of the buildings when more routers are added or the building structure changes.
                 </p>
+
+                <img src="img/high-lvl-requirements/architecutre_2.png" id="arc2" class="doc-image2" alt="">
+
+                <p class="col-12 text-left">User Process:<br><br> A system design will be considered good only if the application is secured, scalable and has covered resilience factors. As we are using a Client-Server architecture for populating the campus population map application,
+                    we have divided the process into two flows — Frontend and Backend. Decoupling the components plays a vital role when you want to make your application platform agnostic.
+                    <br><br>Frontend Process:<br><br> Frontend is responsible for hosting and managing the website which users can use to see the campus maps with the color symbolized population. A Cron job is going to be configured on a web server so
+                    the data will automatically refresh for the user every 5 minutes. Users will use the VT LDAP authorization/authentication to login to the website. Frontend layer is going to call Backend Rest API’s and collect the results in a JSON
+                    format, which will be rendered on a web server and generate a 3D map using the javascript library.
+                    <br><br>The image below is a demo of what the 3D map visualization will look like. This was created using python for proof of concept purposes.
+                    <br><br>
+                </p>
+
+                <img src="img/high-lvl-requirements/3d_view.png" id="viz1" class="doc-image2" alt="">
+
+                <p class="col-12 text-left">We are using gradient color schemes (Red-Green & Blue-Gradient) to show the population on the maps. Red - Population is high, Green - Population is low. The image below was created using Python to show proof of concept. The image shows
+                    how population density can be visualized using a gradient color scheme.
+                    <br><br>
+                </p>
+
+                <img src="img/high-lvl-requirements/2d_view.png" id="viz2" class="doc-image2" alt="">
+
+                <p class="col-12 text-left">An alternative blue color scheme will be provided to give the user an option to switch between the two based on personal preference. The choice between color schemes will help from a usability standpoint when the basemaps change, since
+                    certain color schemes might be more suitable for different basemaps.
+                    <br><br>
+                </p>
+
+                <img src="img/high-lvl-requirements/visualization_2.png" id="viz3" class="doc-image2" alt="">
+
+                <p class="col-12 text-left">Backend Process:<br><br> Backend is the core bone for the application. There are many factors we are considering in this process:
+                    <br><br> Orchestra layer: This layer is responsible to redirect the API request to your backend. There are two major components in this layer: API gateway, and Load Balancer. API gateway layers validate the OAUTH token that client
+                    is sending while making the API request to ensure the integrity of the client. If a token is valid, it forwards the request to the backend traffic manager(load balancer), in which the traffic manager forwards the request to the backend
+                    server. Purpose of load balancer is to handle multiple regions. We are planning to have two regions on our backend: east and west region.
+                    <br><br>Ingress: Adding ingress in our backend system provides more security in case intruders get access to our apis directly. As intruders can bypass the API gateway layer and hit our backend server directly which will cause major
+                    data vulnerability. So, we are planning to have nginx-ingress IP filter configured in ingress script, so only API gateway IP’s can call the API, every other IP will get HTTP 403 forbidden.<br><br>Containerized: We use Docker containers
+                    to package our code and run because it provides many advantages on the operating system level. One of the biggest advantages is that in future, if VT decides to switch cloud companies, we really don’t need to care about setting up
+                    new OS on new cloud servers etc because we can just deploy the docker container in a new server and everything will be up and running. Also, it enables faster software delivery cycles.<br><br>Rest API: Campus mapping API’s will be
+                    designed using spring boot microservice architectures. Framework will be designed using JAVA 8 reactive approach because it allows concurrent execution. Service layer is responsible for collecting the data from the database by running
+                    database queries. Manager layer will convert the database result to POJO and using jackson serialization and controller layer will send the response in JSON format. On the performance perspective, we are also considering that our 99th
+                    percentile should be under 150 ms, and able to handle upto 100TPS.
+                </p>
+
+                <p class="col-12 text-left">We are providing multiple options for users to use on websites. Users can do following things on UI, Load and refresh the data manually, Auto refresh flow, Setting up alert, Print report for certain interval.
+                    <br>1.Users will use VT credentials to login into Campus Mapping UI.
+                    <br>2.Once authorized, the user will be redirected to the home screen which is the main interface, where we show different options for users to choose from.
+                    <br>
+                </p>
+                <p class="indent-1"> &nbsp; &nbsp; &nbsp; &nbsp;a. Load Button</p>
+
+                <p class="indent-2"><br>i.User will click on Load/Refresh button manually to refresh the data on UI in real time
+                    <br> ii.HTTP GET Rest API call will make to backend server using valid OAUTH token
+                    <br> iii.Backend will validate the request and query database and provide response to the UI in JSON format
+                    <br> iv.UI will design the map using the VT building information, and the population counts in certain area
+                    <br><br>
+                </p>
+
+                <p class="indent-1"> &nbsp; &nbsp; &nbsp; &nbsp;b. Refresh Data - 5 minutes</p>
+
+                <p class="indent-2"><br>i.It performs very similar to Load/Refresh data
+                    <br> ii.Difference is only the cron job that triggers every 5 min and makes the rest api call to backend server
+                    <br> iii.Pulls the data from database on every 5 min based and display the map on UI to users
+                    <br><br>
+                </p>
+                <p class="indent-1"> &nbsp; &nbsp; &nbsp; &nbsp;c. Setting up Alert</p>
+                <p class="indent-2"><br>i.User can select alert option in which he/she can set up alert specific to his/her needs
+                    <br> ii.Users can select Frequency, interval time, and threshold
+                    <br> iii.If it exceeds threshold, system will send the alert to user on his/her email or phone based on the preference
+                    <br> iv.When a user sets up the alert it schedules the alert in a queue using schedule time feature.
+                    <br> v.Schedule time feature allows the message to show in the queue when it reaches the configure time. For example, if a user selects frequency every 10 min, a message will be scheduled in queue(current timestamp + 10 min). When
+                    time reach, message will come out of queue
+                    <br> vi.Backend server will read the message and query database
+                    <br> vii.If result increase threshold, then it will send email/sms using third party api’s
+                    <br><br>
+                </p>
+
+                <p class="indent-1"> &nbsp; &nbsp; &nbsp; &nbsp;d. Report </p>
+
+                <p class="indent-1"><br>i.Users also have availability to pull the reports for a certain interval of time.
+                    <br> ii.After selecting, the time, rest api call will trigger and data will retrieve from database
+                    <br> iii.Backend will create a map and generate a PDF file and place it on server
+                    <br> iv.User will select download and pull the file in his/her local
+                    <br><br>
+                </p>
+
+                <h3 class="col-12 text-left">Traceability Matrix</h3>
+                <h4 class="col-12 text-left">Functional Requirements<br><br></h4>
+                <img src="img/high-lvl-requirements/functional_req_traceability_matrix.png" id="fr_tm" class="doc-image2" alt="">
+
+                <h4 class="col-12 text-left">Non-Functional Requirements<br><br></h4>
+                <img src="img/high-lvl-requirements/non_functional_req_traceability_matrix.png" id="nfr_tm" class="doc-image2" alt="">
+
 
 
 

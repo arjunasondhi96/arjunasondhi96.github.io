@@ -28,11 +28,11 @@
                         </div>
                         <nav class="tm-nav">
                             <ul class="tm-nav-ul">
-                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link active">Project Summary</a></li>
+                                <li class="tm-nav-li"><a href="index.html" class="tm-nav-link">Project Summary</a></li>
                                 <li class="tm-nav-li"><a href="use_cases.html" class="tm-nav-link">Use Cases</a></li>
                                 <li class="tm-nav-li"><a href="requirements.html" class="tm-nav-link">Requirements</a></li>
                                 <li class="tm-nav-li"><a href="high_level_design.html" class="tm-nav-link">High-Level Design</a></li>
-                                <li class="tm-nav-li"><a href="design_rationale.html" class="tm-nav-link">Design Rationale</a></li>
+                                <li class="tm-nav-li"><a href="design_rationale.html" class="tm-nav-link active">Design Rationale</a></li>
                                 <li class="tm-nav-li"><a href="conclusion.html" class="tm-nav-link">Conclusion</a></li>
                             </ul>
                         </nav>
@@ -43,34 +43,34 @@
 
         <main>
             <header class="row tm-welcome-section">
-                <h2 class="col-12 text-center tm-section-title">Project Summary</h2>
-                <h3 class="col-12 text-left">Problem</h3>
-                <p class="col-12 text-left">There is a need to estimate and visualize the campus population distribution to inform on sanitization and cleaning decisions to limit the spread of COVID-19. The population information is also helpful in making better decisions with regards
-                    to emergency management.
+                <h2 class="col-12 text-center tm-section-title">Design Rationale</h2>
+                <p class="col-12 text-left">As our project design is heavily dependent on database ETL, near real time update data for client, integration between client and server. We decided and chose two design(s) for system, Pipe and filter, and Client-Server architecture design.
+                    As we are receiving unstructured data from a data warehouse, we have to perform so much cleaning on data, in order to make meaningful data so that we decided to go with pipe and filter architecture to achieve this problem. As data
+                    cleanse can run in parallel we are planning to introduce multiple filters that can be implemented as separate tasks and run in a concurrent fashion. On the other hand, we have user interaction, where they are viewing different maps
+                    on a website, and the website is making REST API calls to the backend server to fulfill the user request, so we choose Client-Server architecture. This allows our application to be fully decoupled from backend and frontend clients
+                    can be hosted on different platforms by using the same backend REST API’s.
+                    <br><br>
                 </p>
-                <h3 class="col-12 text-left">Background</h3>
-                <p class="col-12 text-left">The identification of campus population at-risk for certain hazard/emergency (terrorism, fire, COIVID-19 response, etc.) is critical for making mitigation/evacuation strategies for Virginia Tech emergency management. Knowing the near-real
-                    time population distribution across the campus is beneficial for decision making in effective response and resource allocation. A wireless access point (AP) is a network hardware device that allows devices to connect to a wired network.
-                    Its physical location along with the device connection information have potential to be used to estimate and map nearby populations. Using available campus AP connection data, we will be able to design the architecture of a web application
-                    to visualize the campus population in two-dimensional (2D) and in three-dimensional (3D) space.
+                <h3 class="col-12 text-left">Resiliency and Availability</h3>
+                <p class="col-12 text-left">ETL processes are likely to fail because of connection failures, not enough resources available on the system etc. As ETL process in our application is critical, and time-sensitive operation, failures on this process can provide inconvenience
+                    on the downstream flow of application. Therefore, we are designing resilience in our ETL process so if there are connection failures, the system will keep retrying to connect for a certain period of time. At 99.9% time, this method
+                    works and provides zero downtime and prevents data loss. We are also having failover machines in case the main machine is down due to any unexpected system outage.
+                    <br><br>
                 </p>
-                <h3 class="col-12 text-left">Relevance </h3>
-                <p class="col-12 text-left">As we find ourselves in the middle of a global pandemic we need tools to help with the management of current predicament. With college campuses open, it is essential that measures are taken to limit the spread of COVID-19. One such way
-                    is to sanitize campus spaces regularly. As the sanitization and facilities resources of Virginia Tech are limited, the entire campus cannot be sanitized every day, consequently, we need a way to identify areas of the campus that are
-                    frequently used making them more susceptible for spreading the virus. The data from this system will help identify the populated areas on campus and sanitization resources and efforts can be directed towards these high risk areas to
-                    combat the spread of COVID-19. The application we are planning to design will provide an easy way to view the campus population data and it will provide insights beneficial to emergency management situations. In emergencies (campus
-                    fire, earthquake, school shooting, etc.), Virginia Tech Emergency Management employees can use our system to identify highly populated areas of the campus and prioritize evacuation efforts based on this information.
-
+                <h3 class="col-12 text-left">Performance</h3>
+                <p class="col-12 text-left">Performance will be the key point to make the success of this application. As users are expecting to see 2D and 3D map views of the buildings, which requires different data points from the server(backend) system and making the map on the
+                    fly on the server side. API response time should be faster(~150ms) for interactive sessions for users. In order to achieve this, we are having region based backend servers and the request will go to the performance base region( for
+                    example, if request is initiated from east region, load balancer will route the request to east backend server to get faster response. <br><br>
                 </p>
-                <h3 class="col-12 text-left">Objective</h3>
-                <p class="col-12 text-left">The purpose of this project is to develop the architecture of a system to visualize the campus population using maps, and 2D/3D visualizations.
-
+                <h3 class="col-12 text-left">Integrity</h3>
+                <p class="col-12 text-left">Integrity will be built into the app from the start and is reinforced by the application architecture that was chosen. This will be done by building modular pieces of code which can be unit tested separately. The pipe and filter architecture
+                    allows for this as each filter can be an individual procedure. The client server architecture allows for modularization as well, the API’s can be tested separately. The client server will also allow for the program to be easy to understand
+                    in a logical manner as it is a fairly common application design. <br><br>
                 </p>
-                <h3 class="col-12 text-left">Customer and Intended User</h3>
-                <p class="col-12 text-left">The customer of this system is Virginia Tech, more specifically, Virginia Tech Emergency Management (VTEM). VTEM is a department of Virginia Tech whose goal is to build, improve, and sustain university resilience, departmental readiness,
-                    and individual preparedness. The office takes an all-hazards approach to continuously further the capability of the Virginia Tech community to plan for, mitigate against, respond to, and recover from an incident or emergency. The intended
-                    users of the system are VTEM employees and associates who will use the system to make better decisions regarding emergency management.
-
+                <h3 class="col-12 text-left">Security</h3>
+                <p class="col-12 text-left">Security Vulnerability occurs a lot in today’s real world applications because of lack of security design for applications. This application will use VT LDAP and OAUTH token service to secure the application. Moreover, we are providing
+                    nginx-ingress design to secure backend servers where applications will run and query the data.
+                    <br><br>
                 </p>
 
             </header>
